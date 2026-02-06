@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Миний Валентин болох уу? 💕</title>
+  <style>
+    :root {
+      --yes: #2ecc71;
+      --no: #ff4d4d;
+      --card-bg: rgba(255,255,255,0.18);
+      --card-border: rgba(255,255,255,0.28);
+      --shadow: 0 18px 50px rgba(0,0,0,0.25);
+      --text: #fff;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: var(--text);
+      touch-action: manipulation; /* improves touch feel */
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background:
+        radial-gradient(1200px 700px at 20% 20%, rgba(255,45,122,0.45), transparent 60%),
+        radial-gradient(900px 600px at 80% 30%, rgba(255,255,255,0.25), transparent 55%),
+        radial-gradient(1200px 900px at 60% 90%, rgba(46,204,113,0.25), transparent 60%),
+        linear-gradient(135deg, #2b1055, #7597de);
+    }
+    .card {
+      width: min(520px, 96vw);
+      border-radius: 28px;
+      padding: 22px 18px 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      text-align: center;
+      position: relative;
+    }
+    .title {
+      font-weight: 900;
+      font-size: clamp(1.8rem, 6.5vw, 2.8rem);
+      line-height: 1.15;
+      margin-bottom: 10px;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .subtitle {
+      opacity: 0.9;
+      font-size: clamp(0.95rem, 3.6vw, 1.1rem);
+      margin-bottom: 16px;
+    }
+    .cat-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 14px;
+    }
+    .cat {
+      width: min(280px, 72vw);
+      height: min(280px, 72vw);
+      object-fit: contain;
+      filter: drop-shadow(0 16px 28px rgba(0,0,0,0.35));
+    }
+    .playground {
+      position: relative;
+      width: 100%;
+      height: 150px;
+      margin-top: 10px;
+      touch-action: none;     /* ← important for mobile */
+    }
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 900;
+      font-size: clamp(1.15rem, 4.6vw, 1.55rem);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 14px 35px rgba(0,0,0,0.25);
+      transition: transform 0.15s ease, filter 0.15s ease;
+      touch-action: manipulation;
+      min-width: 160px;
+    }
+    button:active { transform: scale(0.92); }
+    #yes {
+      background: linear-gradient(135deg, #19d36b, #3cff9b);
+      color: #0b3d20;
+      position: relative;
+      z-index: 5;
+    }
+    #no {
+      background: linear-gradient(135deg, #ff3b3b, #ff7b7b);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 6;
+      will-change: transform, left, top;
+    }
+    .toast {
+      position: fixed;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%) translateY(40px);
+      background: rgba(0,0,0,0.55);
+      color: white;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 1.05rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.35s ease;
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      max-width: 92vw;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .heart {
+      position: fixed;
+      font-size: 2.1rem;
+      pointer-events: none;
+      animation: heartFloat 2.6s ease-out forwards;
+      z-index: 100;
+    }
+    @keyframes heartFloat {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 14px;
+      border-radius: 3px;
+      pointer-events: none;
+      z-index: 1000;
+      animation: confettiFall 1.8s ease-out forwards;
+      opacity: 0.95;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-20vh) rotate(0deg); }
+      100% { transform: translateY(120vh) rotate(720deg); }
+    }
+    @media (max-height: 620px) {
+      .cat { width: 210px; height: 210px; }
+      .playground { height: 130px; }
+      button { min-width: 140px; padding: 12px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">Миний Валентин болох уу? 💖</div>
+    <div class="subtitle">“Үгүй” гэж дарж чадахгүй шүү 😼</div>
+    <div class="cat-wrap">
+      <img id="cat" class="cat" alt="cute cat" draggable="false"/>
+    </div>
+    <div class="playground" id="playground">
+      <button id="yes">Тэгье 😊</button>
+      <button id="no">Үгүй 😿</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Хайртай шүү ❤️</div>
+
+  <script>
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const cat = document.getElementById("cat");
+    const toast = document.getElementById("toast");
+    const playground = document.getElementById("playground");
+
+    // More reliable sources (direct Giphy links — .webp usually loads faster & more reliably on mobile)
+    const normalGif = "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.webp";
+    const happyGif  = "https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.webp";
+
+    // Fallback static images if GIF really fails
+    const fallbackNormal = "https://media.giphy.com/media/JIX9t2j0ZTN9S/480w_s.jpg";
+    const fallbackHappy  = "https://media.giphy.com/media/MDJ9IbxxvDUQM/480w_s.jpg";
+
+    function setGif(url, fallbackUrl) {
+      cat.src = "";
+      const img = new Image();
+      img.onload = () => { cat.src = url + "?v=" + Date.now(); };
+      img.onerror = () => { cat.src = fallbackUrl + "?v=" + Date.now(); };
+      img.src = url; // trigger load
+    }
+
+    // Start with normal cat
+    setGif(normalGif, fallbackNormal);
+
+    function showToast(msg, duration = 2200) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), duration);
+    }
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    let isMoving = false;
+
+    function setNoPos(px, py) {
+      noBtn.style.left = px + "px";
+      noBtn.style.top  = py + "px";
+      noBtn.style.transform = "translate(-50%, -50%)";
+    }
+
+    function animateNoTo(targetPx, targetPy) {
+      if (isMoving) return;
+      isMoving = true;
+      const startX = noBtn.offsetLeft;
+      const startY = noBtn.offsetTop;
+      const start = performance.now();
+      const duration = 280;
+
+      function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+      function frame(now) {
+        const t = clamp((now - start) / duration, 0, 1);
+        const e = easeOut(t);
+        const x = startX + (targetPx - startX) * e;
+        const y = startY + (targetPy - startY) * e;
+        setNoPos(x, y);
+        if (t < 1) requestAnimationFrame(frame);
+        else isMoving = false;
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function moveNoButton(e) {
+      if (e.touches) e.preventDefault(); // ← crucial for mobile
+
+      const area = playground.getBoundingClientRect();
+      const bw = noBtn.offsetWidth;
+      const bh = noBtn.offsetHeight;
+      const minX = bw / 2 + 10;
+      const maxX = area.width - bw / 2 - 10;
+      const minY = bh / 2 + 10;
+      const maxY = area.height - bh / 2 - 10;
+
+      let x = Math.random() * (maxX - minX) + minX;
+      let y = Math.random() * (maxY - minY) + minY;
+
+      // Try to avoid covering "Yes" button
+      const yesRect = yesBtn.getBoundingClientRect();
+      const yesCenterX = (yesRect.left + yesRect.right) / 2 - area.left;
+      const yesCenterY = (yesRect.top + yesRect.bottom) / 2 - area.top;
+
+      if (Math.hypot(x - yesCenterX, y - yesCenterY) < 130) {
+        x = clamp(x + 150 + Math.random()*40, minX, maxX);
+        y = clamp(y + 80 + Math.random()*40, minY, maxY);
+      }
+
+      animateNoTo(x, y);
+
+      if (Math.random() < 0.4) {
+        const msgs = [
+          "Хаха, үгүй гэж байхгүй шүү 😼",
+          "Барьж чадвал л дар дааа 😹",
+          "Тэгье гэдэг товч л дарчих 😌",
+          "Битгий би гомдлоо шүү 🥺💕"
+        ];
+        showToast(msgs[Math.floor(Math.random() * msgs.length)], 1600);
+      }
+    }
+
+    // Fix for mobile: use passive: false
+    noBtn.addEventListener("pointerdown", moveNoButton, { passive: false });
+    noBtn.addEventListener("touchstart", moveNoButton, { passive: false });
+    noBtn.addEventListener("touchmove", moveNoButton, { passive: false }); // extra safety
+
+    function confettiBoom() {
+      const count = 100;
+      for (let i = 0; i < count; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        const hue = Math.floor(Math.random() * 360);
+        c.style.background = `hsl(${hue} 95% 60%)`;
+        c.style.left = (Math.random() * 100) + "vw";
+        c.style.top = (-10 - Math.random() * 40) + "vh";
+        c.style.width = (6 + Math.random() * 12) + "px";
+        c.style.height = (10 + Math.random() * 18) + "px";
+        c.style.animationDuration = (1.2 + Math.random() * 1.4).toFixed(2) + "s";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 3000);
+      }
+    }
+
+    function heartsRain() {
+      for (let i = 0; i < 24; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = ["❤️","💖","💘","💕","💗"][Math.floor(Math.random()*5)];
+        heart.style.left = `${Math.random() * 100}vw`;
+        heart.style.top = `${Math.random() * 40 + 60}vh`;
+        heart.style.animationDelay = `${Math.random() * 0.8}s`;
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3800);
+      }
+    }
+
+    yesBtn.addEventListener("click", () => {
+      showToast("Валентин минь болсонд баярлалаа! Чи хамгийн сайхан хүн шүү 💘🥹", 4000);
+      setGif(happyGif, fallbackHappy);
+      confettiBoom();
+      heartsRain();
+      noBtn.disabled = true;
+      noBtn.style.opacity = "0.15";
+      noBtn.style.filter = "grayscale(1) blur(1px)";
+      noBtn.style.pointerEvents = "none";
+    });
+
+    // Reset "No" button position on resize / orientation change
+    window.addEventListener("resize", () => {
+      setNoPos(playground.clientWidth / 2, playground.clientHeight / 2);
+    });
+
+    // Initial position
+    setNoPos(playground.clientWidth / 2, playground.clientHeight / 2);
+  </script>
+</body>
+</html>
